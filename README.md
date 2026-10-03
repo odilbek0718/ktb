@@ -25,7 +25,7 @@ Node.js (Express) + PostgreSQL asosida qurilgan, real ma'lumotlar bazasi bilan i
 
 ### Qadamlar
 
-Terminalni (Mac/Linux: Terminal, Windows: PowerShell yoki CMD) oching va ushbu papkaga o'ting:
+Terminalni (Windows: PowerShell yoki CMD, Mac/Linux: Terminal) oching va ushbu papkaga o'ting:
 
 ```bash
 cd kutubxonam-backend
@@ -50,8 +50,9 @@ docker compose ps
 ```bash
 cp .env.example .env
 ```
+(Windows CMD da: `copy .env.example .env`)
 
-`.env.example` dagi standart qiymatlar docker-compose bilan mos keladi, hech narsa o'zgartirish shart emas (agar `JWT_SECRET`ni xohlasangiz o'zgartirishingiz mumkin — bu shunchaki xavfsizlik uchun tasodifiy matn).
+`.env.example` dagi standart qiymatlar docker-compose bilan mos keladi, hech narsa o'zgartirish shart emas. `JWT_SECRET`ni istalgan tasodifiy uzun matnga o'zgartirish tavsiya etiladi.
 
 **3-qadam — Kerakli kutubxonalarni o'rnatish:**
 
@@ -59,25 +60,17 @@ cp .env.example .env
 npm install
 ```
 
-**4-qadam — Ma'lumotlar bazasi jadvallarini yaratish:**
-
-```bash
-npm run migrate
-```
-
-Muvaffaqiyatli bo'lsa "✅ Migratsiya muvaffaqiyatli yakunlandi" deb chiqadi.
-
-**5-qadam — Serverni ishga tushirish:**
+**4-qadam — Serverni ishga tushirish:**
 
 ```bash
 npm start
 ```
 
-Terminalda `http://localhost:3000` manzili ko'rsatiladi. Brauzerda shu manzilni oching — sayt ishlaydi!
+Bu buyruq avval jadvallarni yaratadi (migratsiya), keyin serverni ishga tushiradi. Terminalda `http://localhost:3000` manzili ko'rsatiladi — brauzerda shu manzilni oching.
 
 ### Keyingi safar ishga tushirish
 
-Kompyuterni o'chirib-yoqqaningizdan keyin, saytni qayta ishga tushirish uchun faqat ikkita buyruq kerak:
+Kompyuterni o'chirib-yoqqaningizdan keyin faqat ikkita buyruq kerak:
 
 ```bash
 docker compose up -d
@@ -101,13 +94,7 @@ DATABASE_URL=postgresql://foydalanuvchi:parol@localhost:5432/kutubxonam
 
 **1-qadam.** https://railway.app saytiga kiring, GitHub hisobingiz bilan ro'yxatdan o'ting (bepul).
 
-**2-qadam.** Ushbu loyihani GitHub'ga yuklang (agar hali yuklamagan bo'lsangiz):
-```bash
-git init
-git add .
-git commit -m "Kutubxonam - boshlang'ich versiya"
-```
-Keyin GitHub'da yangi repository yarating va shu yerga push qiling.
+**2-qadam.** Ushbu loyihani GitHub'ga yuklang. Repository ildizida (root) `package.json`, `src/` va `public/` turishi kerak — ular qo'shimcha papka ichida bo'lmasin, aks holda Railway loyihani tanimaydi.
 
 **3-qadam.** Railway'da "New Project" → "Deploy from GitHub repo" → repositoriyangizni tanlang.
 
@@ -119,9 +106,9 @@ JWT_SECRET=juda-uzun-tasodifiy-maxfiy-matn-shu-yerga
 NODE_ENV=production
 ```
 
-**6-qadam.** Railway avtomatik ravishda `npm install` va `npm start` buyruqlarini bajaradi (bu `package.json` ichida sozlangan). `npm start` avtomatik ravishda ma'lumotlar bazasi jadvallarini ham yaratadi (migratsiya har safar xavfsiz qayta ishga tushadi).
+**6-qadam.** Railway avtomatik ravishda `npm install` va `npm start` buyruqlarini bajaradi. `npm start` avtomatik ravishda ma'lumotlar bazasi jadvallarini ham yaratadi (migratsiya har safar xavfsiz qayta ishga tushadi).
 
-**7-qadam.** Bir necha daqiqadan so'ng, Railway sizga ochiq URL beradi (masalan `kutubxonam-production.up.railway.app`) — shu havola orqali sayt butun dunyoga ochiq bo'ladi.
+**7-qadam.** Bir necha daqiqadan so'ng Railway sizga ochiq URL beradi (masalan `kutubxonam-production.up.railway.app`) — shu havola orqali sayt butun dunyoga ochiq bo'ladi.
 
 ### Keyinchalik domen ulash
 
@@ -138,7 +125,7 @@ kutubxonam-backend/
 ├── docker-compose.yml      # mahalliy PostgreSQL uchun
 ├── src/
 │   ├── server.js          # Express server, marshrutlarni ulaydi
-│   ├── db.js               # PostgreSQL ulanish pool'i
+│   ├── db.js               # PostgreSQL ulanish pool'i va tranzaksiya yordamchisi
 │   ├── db/
 │   │   ├── schema.sql       # jadvallar tuzilishi
 │   │   └── migrate.js        # jadvallarni yaratuvchi skript
@@ -151,7 +138,8 @@ kutubxonam-backend/
 │       └── history.js        # buyurtmalar tarixi
 └── public/
     ├── index.html          # frontend sahifa
-    └── app.js               # frontend JavaScript (API bilan bog'lanadi)
+    ├── app.js               # frontend JavaScript (API bilan bog'lanadi)
+    └── bg.jpg, bg2.jpg      # orqa fon rasmlari (tungi / kunduzgi rejim)
 ```
 
 ## Ma'lumotlar bazasi jadvallari
@@ -163,8 +151,10 @@ kutubxonam-backend/
 
 ## Muammolarni bartaraf etish
 
-**"DATABASE_URL topilmadi" xatosi** — `.env` faylini yaratganingizga ishonch hosil qiling (`cp .env.example .env`).
+**"DATABASE_URL topilmadi" yoki "JWT_SECRET topilmadi" xatosi** — `.env` faylini yaratganingizga ishonch hosil qiling (`cp .env.example .env`).
 
 **"connection refused" xatosi** — Docker konteyneri ishga tushganini tekshiring: `docker compose ps`. Agar ishlamasa: `docker compose up -d`.
 
 **Portlar band** — agar 3000 yoki 5432 port band bo'lsa, `.env` faylida `PORT`ni yoki `docker-compose.yml`da portni o'zgartiring.
+
+**Railway: "Railpack failed to prepare the build"** — repository ildizida `package.json` yo'q. Fayllar papka ichida emas, to'g'ridan-to'g'ri ildizda bo'lishi kerak.

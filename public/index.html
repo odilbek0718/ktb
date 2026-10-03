@@ -10,23 +10,28 @@
   --logo:16px; --nav-h:40px; --btn-h:42px;
 }
 html[data-theme="dark"]{
+  --bg-img:url("bg.jpg"); --overlay:rgba(0,0,0,0.74);
   --bg:#000; --text:#fff; --muted:#9a9a9a; --surface:#141414; --surface2:#1c1c1c;
   --border:rgba(255,255,255,0.16); --ok:#3ddc84; --warn:#ff7259;
   --btn-solid-grad:linear-gradient(180deg,#fff 0%,#e7e7e7 48%,#cfcfcf 100%);
   --btn-solid-text:#111; --btn-solid-border:#fff;
 }
 html[data-theme="light"]{
+  --bg-img:url("bg2.jpg"); --overlay:rgba(255,255,255,0.82);
   --bg:#fff; --text:#111; --muted:#6b6b6b; --surface:#f4f4f4; --surface2:#ececec;
   --border:rgba(0,0,0,0.14); --ok:#1b8a5a; --warn:#d94a2f;
   --btn-solid-grad:linear-gradient(180deg,#161616 0%,#262626 48%,#3a3a3a 100%);
   --btn-solid-text:#fff; --btn-solid-border:#111;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
-body{font-family:"Inter",system-ui,sans-serif; background:var(--bg); color:var(--text); transition:background .2s,color .2s;}
+html{background:var(--bg);}
+body{font-family:"Inter",system-ui,sans-serif; background:transparent; color:var(--text); transition:color .2s; min-height:100vh;}
+/* Orqa fon rasmi (public/bg.jpg va bg2.jpg) + mavzu rangidagi yarim shaffof qatlam */
+body::before{content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; background:linear-gradient(var(--overlay),var(--overlay)), var(--bg-img) center/cover no-repeat; transition:background .2s;}
 a{color:inherit;}
 .hidden{display:none !important;}
 .wrap{max-width:1100px; margin:0 auto; padding:0 24px 60px;}
-.screen, .screen-innner{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+.screen, .screen-inner{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
 .top-header{display:flex; align-items:center; justify-content:space-between; padding:22px 0 16px; border-bottom:1px solid var(--border); margin-bottom:24px;}
 .logo{display:flex; align-items:center; gap:9px; font-size:var(--logo); font-weight:600;}
 .logo svg{width:22px; height:22px;}

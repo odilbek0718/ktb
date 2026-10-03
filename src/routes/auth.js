@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const pool = require('../db');
+const { query, isUniqueViolation } = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
@@ -37,28 +37,28 @@ router.post('/register', async (req, res) => {
     if (!login || login.length < 3 || !/^[a-z0-9_.]+$/.test(login)) {
       return res.status(400).json({ error: "Login kamida 3 belgi, faqat lotin harflari va raqamlardan iborat bo'lsin" });
     }
-    if (!password || password.length < 6) {
+    if (!password || String(password).length < 6) {
       return res.status(400).json({ error: "Parol kamida 6 belgidan iborat bo'lishi kerak" });
     }
 
-    const existingUser = await pool.query('SELECT id FROM users WHERE login=$1', [login]);
+    const existingUser = await query('SELECT id FROM users WHERE login = $1', [login]);
     if (existingUser.rows.length) {
-      return res.status(409).json({ error: "Bu login band, boshqa login tanlang" });
+      return res.status(409).json({ error: 'Bu login band, boshqa login tanlang' });
     }
 
-    let schoolRes = await pool.query('SELECT id, name FROM schools WHERE lower(name)=lower($1)', [schoolName]);
+    const schoolRes = await query('SELECT id, name FROM schools WHERE lower(name) = lower($1)', [schoolName]);
     let schoolId, resolvedSchoolName;
     if (schoolRes.rows.length) {
       schoolId = schoolRes.rows[0].id;
       resolvedSchoolName = schoolRes.rows[0].name;
     } else {
-      const ins = await pool.query('INSERT INTO schools(name) VALUES($1) RETURNING id, name', [schoolName]);
+      const ins = await query('INSERT INTO schools(name) VALUES($1) RETURNING id, name', [schoolName]);
       schoolId = ins.rows[0].id;
       resolvedSchoolName = ins.rows[0].name;
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    const userRes = await pool.query(
+    const passwordHash = await bcrypt.hash(String(password), 10);
+    const userRes = await query(
       `INSERT INTO users(login, password_hash, role, full_name, phone, school_id)
        VALUES($1,$2,$3,$4,$5,$6) RETURNING id, login, role, full_name, phone, school_id`,
       [login, passwordHash, role, fullName, phone || null, schoolId]
@@ -78,8 +78,8 @@ router.post('/register', async (req, res) => {
       },
     });
   } catch (err) {
-    if (err.code === '23505') {
-      return res.status(409).json({ error: "Bu login band, boshqa login tanlang" });
+    if (isUniqueViolation(err)) {
+      return res.status(409).json({ error: 'Bu login band, boshqa login tanlang' });
     }
     console.error('Register error:', err.message);
     res.status(500).json({ error: "Server xatosi yuz berdi, birozdan so'ng qayta urinib ko'ring" });
@@ -95,7 +95,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Login va parolni kiriting' });
     }
 
-    const result = await pool.query(
+    const result = await query(
       `SELECT u.*, s.name AS school_name FROM users u
        LEFT JOIN schools s ON u.school_id = s.id
        WHERE u.login = $1`,
@@ -105,7 +105,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "Login yoki parol noto'g'ri" });
     }
     const user = result.rows[0];
-    const ok = await bcrypt.compare(password, user.password_hash);
+    const ok = await bcrypt.compare(String(password), user.password_hash);
     if (!ok) {
       return res.status(401).json({ error: "Login yoki parol noto'g'ri" });
     }
@@ -131,7 +131,7 @@ router.post('/login', async (req, res) => {
 // ============ JORIY FOYDALANUVCHI ============
 router.get('/me', authRequired, async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await query(
       `SELECT u.id, u.login, u.role, u.full_name, u.phone, s.name AS school_name
        FROM users u LEFT JOIN schools s ON u.school_id = s.id
        WHERE u.id = $1`,

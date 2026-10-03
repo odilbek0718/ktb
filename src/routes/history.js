@@ -1,5 +1,5 @@
 const express = require('express');
-const pool = require('../db');
+const { query } = require('../db');
 const { authRequired, staffOnly } = require('../middleware/auth');
 
 const router = express.Router();
@@ -7,7 +7,7 @@ const router = express.Router();
 // ============ MENING TARIXIM (o'quvchi uchun) ============
 router.get('/me', authRequired, async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await query(
       `SELECT co.id, co.borrowed_at, co.due_at, co.returned_at, b.title, b.author, b.cover_url
        FROM checkouts co
        JOIN books b ON co.book_id = b.id
@@ -25,7 +25,7 @@ router.get('/me', authRequired, async (req, res) => {
 // ============ MAKTAB TARIXI (xodim uchun, barcha o'quvchilar) ============
 router.get('/school', authRequired, staffOnly, async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await query(
       `SELECT co.id, co.borrowed_at, co.due_at, co.returned_at,
               b.title, b.author, u.full_name AS student_name, u.phone AS student_phone
        FROM checkouts co

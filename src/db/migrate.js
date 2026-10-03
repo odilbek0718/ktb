@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const pool = require('../db');
+const { pool } = require('../db');
 
 async function migrate() {
   const sqlPath = path.join(__dirname, 'schema.sql');
