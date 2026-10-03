@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kutubxonam — Maktab kutubxonasi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap">
+<style>
+:root{
+  --logo:16px; --nav-h:40px; --btn-h:42px;
+}
+html[data-theme="dark"]{
+  --bg:#000; --text:#fff; --muted:#9a9a9a; --surface:#141414; --surface2:#1c1c1c;
+  --border:rgba(255,255,255,0.16); --ok:#3ddc84; --warn:#ff7259;
+  --btn-solid-grad:linear-gradient(180deg,#fff 0%,#e7e7e7 48%,#cfcfcf 100%);
+  --btn-solid-text:#111; --btn-solid-border:#fff;
+}
+html[data-theme="light"]{
+  --bg:#fff; --text:#111; --muted:#6b6b6b; --surface:#f4f4f4; --surface2:#ececec;
+  --border:rgba(0,0,0,0.14); --ok:#1b8a5a; --warn:#d94a2f;
+  --btn-solid-grad:linear-gradient(180deg,#161616 0%,#262626 48%,#3a3a3a 100%);
+  --btn-solid-text:#fff; --btn-solid-border:#111;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Inter",system-ui,sans-serif; background:var(--bg); color:var(--text); transition:background .2s,color .2s;}
+a{color:inherit;}
+.hidden{display:none !important;}
+.wrap{max-width:1100px; margin:0 auto; padding:0 24px 60px;}
+.screen{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+.top-header{display:flex; align-items:center; justify-content:space-between; padding:22px 0 16px; border-bottom:1px solid var(--border); margin-bottom:24px;}
+.logo{display:flex; align-items:center; gap:9px; font-size:var(--logo); font-weight:600;}
+.logo svg{width:22px; height:22px;}
+.theme-toggle{width:38px; height:38px; border-radius:50%; border:1px solid var(--border); background:var(--surface); cursor:pointer; display:flex; align-items:center; justify-content:center;}
+.theme-toggle svg{width:17px; height:17px;}
+h1{font-weight:600; letter-spacing:-0.03em;}
+h1 em{font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; color:var(--muted);}
+.hero-copy{max-width:600px; text-align:center;}
+.hero-copy h1{font-size:38px; margin-bottom:14px; line-height:1.2;}
+.lede{color:var(--muted); font-size:15.5px; line-height:1.55; margin-bottom:26px;}
+.role-buttons{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+.btn{height:var(--btn-h); padding:0 20px; border-radius:9px; border:none; font-size:14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; transition:transform .12s;}
+.btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:.5; cursor:not-allowed; transform:none;}
+.btn-solid{background:var(--btn-solid-grad); color:var(--btn-solid-text); border:1px solid var(--btn-solid-border);}
+.btn-ghost{background:transparent; color:var(--text); border:1px solid var(--border);}
+.btn-full{width:100%;}
+.link-btn{background:none; border:none; color:var(--muted); text-decoration:underline; cursor:pointer; font-size:13px; margin-top:20px;}
+.form-card{max-width:400px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:30px 26px; text-align:left;}
+.form-card h2{font-size:21px; margin-bottom:6px;}
+.form-card .sub{font-size:13px; color:var(--muted); margin-bottom:20px; line-height:1.5;}
+.f-field{margin-bottom:14px;}
+.f-field label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px;}
+.f-field input{width:100%; padding:11px 12px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:14px; font-family:inherit;}
+.f-field input:focus{outline:none; border-color:var(--text);}
+.f-error{font-size:12.5px; color:var(--warn); margin:-6px 0 12px; min-height:16px;}
+.f-back{display:block; text-align:center; margin-top:14px; font-size:12.5px; color:var(--muted); background:none; border:none; cursor:pointer; width:100%;}
+.app-header{display:flex; align-items:center; justify-content:space-between; padding:20px 0; border-bottom:1px solid var(--border); margin-bottom:24px;}
+.greeting{font-size:13px; color:var(--muted); display:flex; align-items:center; gap:10px;}
+.greeting strong{color:var(--text);}
+.role-pill{font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:20px; background:var(--surface2); border:1px solid var(--border); text-transform:uppercase;}
+.logout-btn{background:none; border:none; color:var(--warn); font-size:12.5px; font-weight:600; cursor:pointer;}
+.tabs{display:flex; gap:8px; margin-bottom:20px;}
+.tab-btn{padding:9px 16px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:13px; font-weight:600; cursor:pointer;}
+.tab-btn.active{background:var(--text); color:var(--bg); border-color:var(--text);}
+.banner{background:var(--warn); color:#fff; padding:13px 16px; border-radius:10px; margin-bottom:18px; font-size:13px; font-weight:600; line-height:1.5;}
+.add-book-box{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:20px;}
+.add-book-box h3{font-size:13.5px; margin-bottom:12px;}
+.add-book-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+.add-book-row input[type=text]{flex:1; min-width:140px; padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:13.5px;}
+.cover-upload-label{display:flex; align-items:center; gap:6px; height:40px; padding:0 12px; border-radius:8px; border:1px dashed var(--border); color:var(--muted); font-size:12.5px; cursor:pointer;}
+.cover-upload-label img{width:24px; height:24px; border-radius:5px; object-fit:cover;}
+.search-box input{width:100%; padding:11px 14px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text); font-size:14px; margin-bottom:16px;}
+.shelf-label{font-size:12px; color:var(--muted); margin-bottom:12px; font-weight:600;}
+.grid{display:grid; grid-template-columns:1fr 320px; gap:26px; align-items:start;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;}}
+.books-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+.book{background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; cursor:pointer; transition:transform .12s;}
+.book:hover{transform:translateY(-2px);}
+.book .spine{height:110px; background:linear-gradient(105deg,#2a2a2a,#4a4a4a); position:relative; overflow:hidden; display:flex; align-items:flex-start; justify-content:flex-end; padding:8px;}
+.book .spine img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+.book .dot{width:9px; height:9px; border-radius:50%; background:var(--muted); border:1px solid var(--border); position:relative; z-index:2;}
+.book.available .dot{background:var(--ok);}
+.book.borrowed .dot{background:var(--warn);}
+.book .info{padding:10px 11px 12px;}
+.book .title{font-weight:600; font-size:14px; line-height:1.25;}
+.book .author{font-size:11px; color:var(--muted); margin-top:2px;}
+.book .status-line{font-size:10.5px; font-weight:600; margin-top:6px; color:var(--warn);}
+.book.available .status-line{color:var(--ok);}
+.no-results{grid-column:1/-1; text-align:center; padding:40px; color:var(--muted); font-size:14px;}
+.panel{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; position:sticky; top:20px;}
+.panel h2{font-size:18px; margin-bottom:4px;}
+.panel .sub{font-size:12.5px; color:var(--muted); margin-bottom:16px;}
+.p-field{margin-bottom:12px;}
+.p-field label{display:block; font-size:11.5px; font-weight:600; color:var(--muted); margin-bottom:5px;}
+.p-field input{width:100%; padding:9px 11px; border-radius:7px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:13.5px;}
+.p-field input:disabled{opacity:.7;}
+.student-results{border:1px solid var(--border); border-radius:8px; max-height:160px; overflow-y:auto; margin-bottom:12px;}
+.student-result-item{padding:9px 11px; font-size:13px; cursor:pointer; border-bottom:1px solid var(--border);}
+.student-result-item:last-child{border-bottom:none;}
+.student-result-item:hover{background:var(--surface2);}
+.student-picked{background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:13.5px;}
+.p-empty{font-size:13px; color:var(--muted); line-height:1.5;}
+.p-message{background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; font-size:14px; line-height:1.5;}
+.history-list{display:flex; flex-direction:column; gap:10px;}
+.history-item{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13px;}
+.history-item .h-title{font-weight:600; margin-bottom:4px;}
+.history-item .h-meta{color:var(--muted); font-size:12px;}
+.history-item .h-status{display:inline-block; margin-top:6px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:12px;}
+.h-status.returned{background:rgba(61,220,132,0.15); color:var(--ok);}
+.h-status.active{background:rgba(255,114,89,0.15); color:var(--warn);}
+.toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--text); color:var(--bg); padding:12px 20px; border-radius:10px; font-size:14px; opacity:0; pointer-events:none; transition:.25s; z-index:100; max-width:90vw; text-align:center;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="screen" id="landingScreen">
+  <div style="width:100%;">
+    <div class="wrap" style="padding-bottom:0;">
+      <div class="top-header" style="border-bottom:none;">
+        <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4.5C3 4.5 6 3 9 4.5V19C6 17.5 3 19 3 19V4.5Z"/><path d="M21 4.5C21 4.5 18 3 15 4.5V19C18 17.5 21 19 21 19V4.5Z"/></svg><span>Kutubxonam</span></div>
+        <button class="theme-toggle" id="themeToggle"></button>
+      </div>
+    </div>
+    <div class="screen" style="min-height:70vh; padding-top:0;">
+      <div class="hero-copy">
+        <h1>Kitoblarni <em>bir joyda</em> kuzatib boring.</h1>
+        <p class="lede">Kutubxona xodimi kitoblarni javonga qo'shadi, o'quvchilar mavjud kitoblarni ko'radi, har bir olingan kitob tarixda saqlanadi.</p>
+        <div class="role-buttons">
+          <button class="btn btn-solid" id="btnStaffRole">🧑‍💼 Kutubxona xodimiman</button>
+          <button class="btn btn-ghost" id="btnStudentRole">🎒 O'quvchiman</button>
+        </div>
+        <button class="link-btn" id="btnGoLogin">Loginim bor — kirish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAFF REGISTER -->
+<div class="screen hidden" id="staffRegisterScreen">
+  <div class="form-card">
+    <h2>Xodim sifatida ro'yxatdan o'tish</h2>
+    <div class="sub">Ma'lumotlaringizni kiriting va o'zingiz uchun login-parol tanlang.</div>
+    <div class="f-field"><label>Ism va familiya</label><input type="text" id="staffFullName" placeholder="Dilnoza Yusupova"></div>
+    <div class="f-field"><label>Telefon raqami</label><input type="text" id="staffPhone" placeholder="+998 90 123 45 67"></div>
+    <div class="f-field"><label>Maktab nomi yoki raqami</label><input type="text" id="staffSchool" placeholder="45-maktab"></div>
+    <div class="f-field"><label>Login (o'zingiz tanlang)</label><input type="text" id="staffLogin" placeholder="dilnoza45"></div>
+    <div class="f-field"><label>Parol (kamida 6 belgi)</label><input type="password" id="staffPassword" placeholder="••••••"></div>
+    <div class="f-error" id="staffError"></div>
+    <button class="btn btn-solid btn-full" id="staffRegisterBtn">Ro'yxatdan o'tish</button>
+    <button class="f-back" data-back="landingScreen">← Orqaga</button>
+  </div>
+</div>
+
+<!-- STUDENT REGISTER -->
+<div class="screen hidden" id="studentRegisterScreen">
+  <div class="form-card">
+    <h2>O'quvchi sifatida ro'yxatdan o'tish</h2>
+    <div class="sub">Ma'lumotlaringizni kiriting va o'zingiz uchun login-parol tanlang.</div>
+    <div class="f-field"><label>Ism va familiya</label><input type="text" id="studentFullName" placeholder="Aziza Karimova"></div>
+    <div class="f-field"><label>Telefon raqami</label><input type="text" id="studentPhone" placeholder="+998 90 123 45 67"></div>
+    <div class="f-field"><label>Maktab nomi yoki raqami</label><input type="text" id="studentSchool" placeholder="45-maktab"></div>
+    <div class="f-field"><label>Login (o'zingiz tanlang)</label><input type="text" id="studentLogin" placeholder="aziza45"></div>
+    <div class="f-field"><label>Parol (kamida 6 belgi)</label><input type="password" id="studentPassword" placeholder="••••••"></div>
+    <div class="f-error" id="studentError"></div>
+    <button class="btn btn-solid btn-full" id="studentRegisterBtn">Ro'yxatdan o'tish</button>
+    <button class="f-back" data-back="landingScreen">← Orqaga</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="screen hidden" id="loginScreen">
+  <div class="form-card">
+    <h2>Kirish</h2>
+    <div class="sub">Ro'yxatdan o'tganda tanlagan login va parolingizni kiriting.</div>
+    <div class="f-field"><label>Login</label><input type="text" id="loginLogin" placeholder="aziza45"></div>
+    <div class="f-field"><label>Parol</label><input type="password" id="loginPassword" placeholder="••••••"></div>
+    <div class="f-error" id="loginError"></div>
+    <button class="btn btn-solid btn-full" id="loginBtn">Kirish</button>
+    <button class="f-back" data-back="landingScreen">← Orqaga</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="mainApp" class="hidden">
+<div class="wrap">
+  <div class="app-header">
+    <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4.5C3 4.5 6 3 9 4.5V19C6 17.5 3 19 3 19V4.5Z"/><path d="M21 4.5C21 4.5 18 3 15 4.5V19C18 17.5 21 19 21 19V4.5Z"/></svg><span>Kutubxonam</span></div>
+    <div class="greeting" id="greetingBox"></div>
+    <button class="theme-toggle" id="themeToggle2"></button>
+  </div>
+
+  <div class="tabs" id="tabsRow">
+    <button class="tab-btn active" data-tab="books">📚 Kitoblar</button>
+    <button class="tab-btn" data-tab="history">🕘 Tarix</button>
+  </div>
+
+  <!-- BOOKS TAB -->
+  <div id="booksTab">
+    <div id="staffAddBox" class="add-book-box hidden">
+      <h3>➕ Yangi kitob qo'shish</h3>
+      <div class="add-book-row">
+        <input type="text" id="newBookTitle" placeholder="Kitob nomi">
+        <input type="text" id="newBookAuthor" placeholder="Muallif">
+        <label class="cover-upload-label" id="coverUploadLabel">
+          <input type="file" id="newBookCoverFile" accept="image/*" class="hidden">
+          <span id="coverUploadText">📷 Muqova</span>
+          <img id="coverPreviewImg" class="hidden">
+        </label>
+        <button class="btn btn-solid" id="addBookBtn">Qo'shish</button>
+      </div>
+    </div>
+
+    <div id="overdueBanner"></div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Kitob yoki muallif nomini yozing...">
+    </div>
+    <div class="shelf-label" id="shelfLabel">KITOBLAR JAVONI</div>
+
+    <div class="grid">
+      <div class="books-grid" id="booksGrid"></div>
+      <div class="panel" id="sidePanel"></div>
+    </div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div id="historyTab" class="hidden">
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
