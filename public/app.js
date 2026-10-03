@@ -39,7 +39,7 @@ function showToast(msg){
   showToast._tm = setTimeout(()=>t.classList.remove('show'), 2800);
 }
 function switchScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.querySelectorAll('body > .screen').forEach(s=>s.classList.add('hidden'));
   if(id) document.getElementById(id).classList.remove('hidden');
 }
 document.querySelectorAll('[data-back]').forEach(btn=>{

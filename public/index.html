@@ -26,7 +26,7 @@ body{font-family:"Inter",system-ui,sans-serif; background:var(--bg); color:var(-
 a{color:inherit;}
 .hidden{display:none !important;}
 .wrap{max-width:1100px; margin:0 auto; padding:0 24px 60px;}
-.screen{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+.screen, .screen-innner{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
 .top-header{display:flex; align-items:center; justify-content:space-between; padding:22px 0 16px; border-bottom:1px solid var(--border); margin-bottom:24px;}
 .logo{display:flex; align-items:center; gap:9px; font-size:var(--logo); font-weight:600;}
 .logo svg{width:22px; height:22px;}
@@ -123,7 +123,7 @@ h1 em{font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; 
         <button class="theme-toggle" id="themeToggle"></button>
       </div>
     </div>
-    <div class="screen" style="min-height:70vh; padding-top:0;">
+    <div class="screen-inner" style="min-height:70vh; padding-top:0;">
       <div class="hero-copy">
         <h1>Kitoblarni <em>bir joyda</em> kuzatib boring.</h1>
         <p class="lede">Kutubxona xodimi kitoblarni javonga qo'shadi, o'quvchilar mavjud kitoblarni ko'radi, har bir olingan kitob tarixda saqlanadi.</p>
